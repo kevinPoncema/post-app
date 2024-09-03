@@ -25,7 +25,8 @@
       </div>
       <div class="d-flex justify-content-end">
         <button type="submit" class="btn btn-success me-2">Agregar</button>
-        <button type="button" @click="onUpdate" class="btn btn-primary">Actualizar</button>
+        <button type="button" @click="onUpdate" class="btn btn-primary me-2">Actualizar</button>
+        <button type="button" @click="onClear" class="btn btn-secondary">Limpiar</button>
       </div>
     </form>
   </div>
@@ -33,7 +34,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { defineProps, defineEmits } from 'vue';
+import { defineProps, defineEmits, watch } from 'vue';
 
 // Definir props
 const props = defineProps({
@@ -57,6 +58,19 @@ const emit = defineEmits(['submit', 'update']);
 // Crear refs para los campos
 const tituloLocal = ref(props.titulo);
 const contenidoLocal = ref(props.contenido);
+const localId = ref(props.myId);
+
+watch(() => props.titulo, (newTitulo) => {
+  tituloLocal.value = newTitulo;
+});
+
+watch(() => props.contenido, (newContenido) => {
+  contenidoLocal.value = newContenido;
+});
+
+watch(() => props.myId, (newId) => {
+  localId.value = newId;
+});
 
 // Manejar el evento de submit
 const onSubmit = () => {
@@ -66,7 +80,7 @@ const onSubmit = () => {
 
 // Manejar el evento de update
 const onUpdate = () => {
-  emit('update', { titulo: tituloLocal.value, contenido: contenidoLocal.value, id: props.myId });
+  emit('update', tituloLocal.value, contenidoLocal.value, localId.value);
   resetForm();
 };
 
@@ -74,6 +88,11 @@ const onUpdate = () => {
 const resetForm = () => {
   tituloLocal.value = '';
   contenidoLocal.value = '';
+};
+
+// Función para limpiar el formulario
+const onClear = () => {
+  resetForm();
 };
 </script>
 

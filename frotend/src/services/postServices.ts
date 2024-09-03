@@ -50,5 +50,27 @@ export async function deletePostById(id: string) {
     return data;
 }
 
+export async function updatePost(titulo: string, contenido: string, id: string) {
+
+    const dataSend = {
+        title: titulo,
+        content: contenido
+    }
+    console.log(dataSend)
+    const response = await fetch(`http://localhost:3003/updatePost/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataSend)
+    });
+
+    if (!response.ok) {
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+    }
+
+    const data: PostData = await response.json();
+    return data;
+}
 
 

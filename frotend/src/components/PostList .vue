@@ -48,6 +48,9 @@ const props = defineProps({
   }
 });
 
+// Definir los emits
+const emit = defineEmits(['setEditable']);
+
 // Watch para recargar los datos cuando 'statusReload' cambie
 watch(() => props.statusReload, (newVal) => {
   if (newVal) {
@@ -56,14 +59,14 @@ watch(() => props.statusReload, (newVal) => {
 });
 
 const editPost = (post: PostData) => {
-  console.log('Edit post:', post);
+  emit("setEditable", post);  // Emitir el evento con el post
   // Aquí puedes manejar la lógica de edición, como navegar a un formulario de edición o abrir un modal
 };
 
 const deletePost = async (id: string) => {
   try {
     await deletePostById(id);
-    fetchPosts();
+    fetchPosts();  // Refrescar la lista de posts
   } catch (error) {
     console.error('Failed to delete post:', error);
   }

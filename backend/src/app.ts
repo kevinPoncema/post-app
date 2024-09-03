@@ -60,15 +60,40 @@ app.delete("/deletePost/:id",async(req,res)=>{
     }
 })
 
-app.put("/updatePost/:id",async(req,res)=>{
+app.put("/updatePost/:id", async (req, res) => {
     try {
-        const post = await Post.findByIdAndUpdate(req.params.id,req.body,{ new:true})
-        if(!post) return res.status(404).send({message:"Not.found"})
-        res.send(post)
-    } catch (error) {
-        res.status(500).send({error:error})
+        // Extraer los campos que corresponden a tu esquema
+        const { title, content } = req.body;
+        const id = req.params.id;
+        console.log(id, req.body);
+
+        // Verifica que title y content sean cadenas antes de actualizar
+        if (typeof title !== 'string' || typeof content !== 'string') {
+            return res.status(400).send({ message: "Invalid input: 'title' and 'content' must be strings" });
+        }
+
+        // Crear un nuevo objeto solo con los campos necesarios
+        const updateData = {
+            title,
+            content
+        };
+
+        // Actualizar el post en la base de datos
+        const post = await Post.findByIdAndUpdate(id, updateData, { new: true });
+        // Si no se encuentra el post, enviar un 404
+        if (!post) return res.status(404).send({ message: "Not found" });
+
+        // Enviar el post actualizado como respuesta
+        res.send(post);
+    } catch (error:any) {
+        console.error(error);
+        res.status(500).send({ error: error.message || "An unexpected error occurred" });
     }
-})
+});
+
+
+
+
 
 app.get("/filterPost/:keyword", async (req, res) => {
     try {
