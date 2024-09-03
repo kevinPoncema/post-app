@@ -1,11 +1,12 @@
 export interface PostData {
-    postId: number;
-    postContent: string;
-    postTitle: string;
+    postId: string;
+    content: string;
+    title: string;
+    enable:boolean
 }
 
 export async function getPost(){
-    const response = await  fetch("http://localhost:3003/dataExemle")
+    const response = await  fetch("http://localhost:3003/posts")
     if(!response.ok){
         throw new Error(`Error: ${response.status} ${response.statusText}`);
     }

@@ -58,8 +58,22 @@ app.put("/updatePost/:id",async(req,res)=>{
     } catch (error) {
         res.status(500).send({error:error})
     }
-
 })
+
+app.get("/filterPost/:keyword", async (req, res) => {
+    try {
+        const keyword = req.params.keyword; // Obtener el parámetro de la ruta 'keyword'
+
+        // Construir la consulta de filtro utilizando una expresión regular
+        const filter = keyword ? { title: { $regex: new RegExp(keyword, 'i') } } : {};
+
+        const posts = await Post.find(filter); // Buscar los posts que coincidan con el filtro
+        res.json(posts); // Enviar los resultados como JSON
+    } catch (error) {
+        res.status(500).json({ message: 'Error al obtener los posts', error }); // Manejo de errores
+    }
+});
+
 const port = 3003
 app.listen(port,()=>{
     console.log("servidor en ejecucion")
