@@ -22,12 +22,22 @@ app.get("/posts", async (req, res) => {
 });
 
 
-app.post("/cratePost",async (req,res)=>{
-    const {title,content} = req.body;
-   const post = new Post({title,content})
-   await post.save()
-   res.send(post)
-})
+app.post("/createPost", async (req, res) => {
+    const { title } = req.body;
+    const { titulo, contenido } = title;
+    // Crear un nuevo post con el título y contenido
+    const post = new Post({ title: titulo, content: contenido });
+    try {
+        // Guardar el post en la base de datos
+        await post.save();
+        res.status(201).send(post);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+});
+
+
+
 
 app.get("/post/:id",async(req,res)=>{
     try {
