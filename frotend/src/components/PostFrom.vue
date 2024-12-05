@@ -100,6 +100,6 @@ const onClear = () => {
 .card {
   border: 2px solid black;
   border-radius: 10px;
-  width: 300px; /* Ajuste del ancho del formulario */
+  width: 600px; /* Ajuste del ancho del formulario */
 }
 </style>
