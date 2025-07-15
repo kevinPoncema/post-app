@@ -5,7 +5,7 @@ export interface PostData {
 }
 
 export async function getPost(){
-    const response = await  fetch("http://localhost:3003/posts")
+    const response = await  fetch("http://localhost:3011/posts")
     if(!response.ok){
         throw new Error(`Error: ${response.status} ${response.statusText}`);
     }
@@ -16,7 +16,7 @@ export async function getPost(){
 
 export async function createPost(titulo: string, contenido: string) {
     console.log(titulo, contenido);
-    const response = await fetch('http://localhost:3003/createPost', {
+    const response = await fetch('http://localhost:3011/createPost', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -38,7 +38,7 @@ export async function createPost(titulo: string, contenido: string) {
 
 
 export async function deletePostById(id: string) {
-    const response = await fetch(`http://localhost:3003/deletePost/${id}`, {
+    const response = await fetch(`http://localhost:3011/deletePost/${id}`, {
         method: "DELETE",  // Corregido el método HTTP
     });
 
@@ -57,7 +57,7 @@ export async function updatePost(titulo: string, contenido: string, id: string) 
         content: contenido
     }
     console.log(dataSend)
-    const response = await fetch(`http://localhost:3003/updatePost/${id}`, {
+    const response = await fetch(`http://localhost:3011/updatePost/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'

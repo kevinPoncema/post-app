@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  post-frontend:
+    build:
+      context: .
+      dockerfile: frontend.dockerfile
+    container_name: post-app-frontend
+    ports:
+      - "3010:3000"  # 8080 es el puerto por defecto de Vue CLI
+    restart: always
+    depends_on:
+      - post-backend
+
+  post-backend:
+    build:
+      context: .
+      dockerfile: backend.dockerfile
+    container_name: post-app-backend
+    ports:
+      - "3011:3003"
+    restart: always
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/post-db
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo-post-db
+    ports:
+      - "27017:27017"
+    restart: always
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
